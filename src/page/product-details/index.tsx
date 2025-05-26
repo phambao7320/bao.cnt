@@ -20,14 +20,15 @@ const ProductDetailsPage = () => {
   const [mainImage, setMainImage] = useState("");
   const [productData, setProductData] = useState<Product | null>(null);
 
-  const fetchProductData = async () => {
-    const product = products.find((product) => product._id === id) ?? null;
-    setProductData(product);
-  };
-
   useEffect(() => {
-    fetchProductData();
-  }, [id, products.length]);
+    const fetchProductData = async () => {
+      const product = products.find((product) => product._id === id) ?? null;
+      setProductData(product);
+    };
+    if (id) {
+      fetchProductData();
+    }
+  }, [id]);
 
   if (!productData) {
     return null;

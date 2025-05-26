@@ -3,7 +3,6 @@ import React from "react";
 import { assets } from "@/assets/assets";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useClerk, UserButton } from "@clerk/nextjs";
 import { useAppContext } from "@/components/providers/AppProvider";
 import { CartIcon } from "@/components/ui/icons/cart-icon";

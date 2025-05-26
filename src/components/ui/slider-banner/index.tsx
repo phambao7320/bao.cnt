@@ -13,7 +13,7 @@ const Banner = () => {
       setCurrentSlide((prev) => (prev + 1) % sliderData.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [sliderData.length]);
+  }, []);
 
   const handleSlideChange = (index: number) => {
     setCurrentSlide(index);

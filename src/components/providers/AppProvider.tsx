@@ -37,7 +37,7 @@ export const AppContextProvider = (props: any) => {
   };
 
   const addToCart = async (itemId: string) => {
-    let cartData = structuredClone(cartItems);
+    const cartData = structuredClone(cartItems);
     if (cartData[itemId]) {
       cartData[itemId] += 1;
     } else {
@@ -47,7 +47,7 @@ export const AppContextProvider = (props: any) => {
   };
 
   const updateCartQuantity = async (itemId: string, quantity: number) => {
-    let cartData = structuredClone(cartItems);
+    const cartData = structuredClone(cartItems);
     if (quantity === 0) {
       delete cartData[itemId];
     } else {
@@ -69,7 +69,7 @@ export const AppContextProvider = (props: any) => {
   const getCartAmount = () => {
     let totalAmount = 0;
     for (const items in cartItems) {
-      let itemInfo = products.find((product: any) => product._id === items);
+      const itemInfo = products.find((product: any) => product._id === items);
       if (cartItems[items] > 0) {
         totalAmount += itemInfo.offerPrice * cartItems[items];
       }
