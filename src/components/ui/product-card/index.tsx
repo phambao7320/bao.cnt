@@ -4,8 +4,13 @@ import React from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { ProductType } from "@/models/product";
 
-const ProductCard = ({ product }: any) => {
+type ProductCardProps = {
+  product: ProductType;
+};
+
+const ProductCard = ({ product }: ProductCardProps) => {
   const router = useRouter();
 
   return (
@@ -18,7 +23,7 @@ const ProductCard = ({ product }: any) => {
     >
       <div className="cursor-pointer group relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center">
         <Image
-          src={product.image[0]}
+          src={product.photos[0]}
           alt={product.name}
           className="group-hover:scale-105 transition object-cover w-4/5 h-4/5 md:w-full md:h-full"
           width={800}

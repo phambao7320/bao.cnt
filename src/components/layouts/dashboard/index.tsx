@@ -1,7 +1,5 @@
-import React from "react";
+import HeaderDashboard from "./header";
+import FooterDashboard from "./footer";
+import SideBarDashboard from "./sidebar";
 
-const DashBoard = () => {
-  return <main className="w-full max-w-[1280px]">DashBoard</main>;
-};
-
-export default DashBoard;
+export { HeaderDashboard, FooterDashboard, SideBarDashboard };

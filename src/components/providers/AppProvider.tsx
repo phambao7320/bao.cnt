@@ -1,7 +1,9 @@
 "use client";
 
-import { productsDummyData, userDummyData } from "@/constants/data";
-import { useUser } from "@clerk/nextjs";
+import { productsDummyData } from "@/constants/data";
+import { clientAxios } from "@/libs/axios";
+import { useAuth, useUser } from "@clerk/nextjs";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -20,12 +22,11 @@ export const AppContextProvider = (props: any) => {
   const router = useRouter();
 
   const { user } = useUser();
-
-  console.log("debug", user);
+  const { getToken } = useAuth();
 
   const [products, setProducts] = useState<any>([]);
   const [userData, setUserData] = useState<any>(null);
-  const [isSeller, setIsSeller] = useState(true);
+  const [isSeller, setIsSeller] = useState(false);
   const [cartItems, setCartItems] = useState<any>({});
 
   const fetchProductData = async () => {
@@ -33,7 +34,21 @@ export const AppContextProvider = (props: any) => {
   };
 
   const fetchUserData = async () => {
-    setUserData(userDummyData);
+    try {
+      if (user?.publicMetadata?.role === "seller") {
+        setIsSeller(true);
+      }
+      const token = await getToken();
+      const { data } = await clientAxios.get("/apis/user/data");
+
+      if (data?.success === true) {
+        setUserData(data.user);
+      } else {
+        console.log(data?.message);
+      }
+    } catch (error: any) {
+      console.log("Fetch user data failed", error?.message);
+    }
   };
 
   const addToCart = async (itemId: string) => {
@@ -83,7 +98,7 @@ export const AppContextProvider = (props: any) => {
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [user]);
 
   const value = {
     currency,
@@ -101,6 +116,7 @@ export const AppContextProvider = (props: any) => {
     getCartCount,
     getCartAmount,
     user,
+    getToken,
   };
 
   return (

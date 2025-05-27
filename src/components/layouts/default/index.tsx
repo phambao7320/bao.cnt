@@ -9,7 +9,7 @@ type DefaultLayoutProps = {
 const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
     <main className="w-full flex flex-col items-center">
-      <div className="w-[90%] max-w-[1280px]">
+      <div className="max-w-[1280px]">
         <Header />
         {children}
         <Footer />

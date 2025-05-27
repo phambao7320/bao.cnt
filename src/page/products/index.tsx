@@ -2,10 +2,10 @@
 
 import ProductCard from "@/components/ui/product-card";
 import { DefaultLayout } from "@/components/layouts";
-import { useAppContext } from "@/components/providers/AppProvider";
+import { useProducts } from "@/hooks/useProducts";
 
 const ProductsPage = () => {
-  const { products } = useAppContext();
+  const { products } = useProducts();
 
   return (
     <DefaultLayout>
