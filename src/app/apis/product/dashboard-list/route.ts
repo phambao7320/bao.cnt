@@ -6,6 +6,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
+    const searchParams = request.nextUrl.searchParams;
+
+    const limit = Number(searchParams.get("limit") ?? 10);
+    const offset = Number(searchParams.get("offset") ?? 0);
+    const q = searchParams.get("q") ?? "";
+
     const { userId } = getAuth(request);
     const isSeller = await authSeller(userId);
     if (!isSeller) {
@@ -13,9 +19,24 @@ export async function GET(request: NextRequest) {
     }
 
     await connectDB();
-    const products = await Product.find({});
 
-    return NextResponse.json({ success: true, products });
+    const query = q ? { name: { $regex: q, $options: "i" } } : {};
+
+    const aggregateResult = await Product.aggregate([
+      { $match: query },
+      {
+        $facet: {
+          products: [{ $skip: offset }, { $limit: limit }],
+          total: [{ $count: "count" }],
+        },
+      },
+    ]);
+
+    const products = aggregateResult[0]?.products || [];
+    const totalProducts = aggregateResult[0]?.total[0]?.count || 0;
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    return NextResponse.json({ success: true, products, totalPages });
   } catch (error: any) {
     return NextResponse.json({ success: false, message: error?.message });
   }

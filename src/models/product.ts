@@ -28,7 +28,7 @@ const ProductSchema = new Schema(
       required: true,
     },
     offerPrice: {
-      type: String,
+      type: Number,
       required: true,
     },
   },

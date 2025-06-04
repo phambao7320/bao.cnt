@@ -1,6 +1,6 @@
 "use client";
 
-import { clientAxios } from "@/libs/axios";
+import { axiosInstance } from "@/libs/axios";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -69,7 +69,7 @@ export const useCreateProduct = (): AddProductFormReturn => {
     });
 
     console.log("Form data:", data);
-    const result = await clientAxios.post("/apis/product/add", formData);
+    const result = await axiosInstance.post("/apis/product/add", formData);
 
     console.log("result", result);
   };

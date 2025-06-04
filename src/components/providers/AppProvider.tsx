@@ -1,9 +1,8 @@
 "use client";
 
 import { productsDummyData } from "@/constants/data";
-import { clientAxios } from "@/libs/axios";
+import { axiosInstance } from "@/libs/axios";
 import { useAuth, useUser } from "@clerk/nextjs";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -38,8 +37,7 @@ export const AppContextProvider = (props: any) => {
       if (user?.publicMetadata?.role === "seller") {
         setIsSeller(true);
       }
-      const token = await getToken();
-      const { data } = await clientAxios.get("/apis/user/data");
+      const { data } = await axiosInstance.get("/apis/user/data");
 
       if (data?.success === true) {
         setUserData(data.user);

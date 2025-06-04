@@ -1,20 +1,20 @@
-"use client";
-
 import axios from "axios";
 
-export const clientAxios = axios.create({
+export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
-export const setAuthToken = (token: string | null) => {
-  clientAxios.interceptors.request.clear();
-  clientAxios.interceptors.request.use(
-    (config) => {
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
-};
+const isClient = typeof window !== undefined;
+
+axiosInstance.interceptors.request.use(async (config) => {
+  // const { getToken } = useAuth();
+  // const token = await getToken();
+
+  // console.log("token", token);
+
+  // if (token) {
+  //   config.headers.Authorization = `Bearer ${token}`;
+  // }
+
+  return config;
+});

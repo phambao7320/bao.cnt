@@ -1,9 +1,6 @@
 import React from "react";
-import {
-  HeaderDashboard,
-  SideBarDashboard,
-  FooterDashboard,
-} from "@/components/layouts/dashboard";
+import { SideBarDashboard, HeaderDashboard } from "@/components/layouts";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 type DashBoardLayoutProps = {
   children: React.ReactNode;
@@ -11,16 +8,15 @@ type DashBoardLayoutProps = {
 
 const DashBoardLayout = ({ children }: DashBoardLayoutProps) => {
   return (
-    <main className="w-full flex">
-      <div>
+    <SidebarProvider>
+      <div className="drop-shadow-2xl shadow">
         <SideBarDashboard />
       </div>
-      <div className="flex flex-col flex-1">
+      <SidebarInset>
         <HeaderDashboard />
         {children}
-        {/* <FooterDashboard /> */}
-      </div>
-    </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
 

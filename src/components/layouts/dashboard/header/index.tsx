@@ -1,13 +1,19 @@
+import Breadcrumbs from "@/components/ui/breadcrumb";
+import DarkModeToggle from "@/components/ui/dark-mode";
+import { Separator } from "@/components/ui/separator";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
 
-const HeaderDashboard = () => {
+export default function HeaderDashboard() {
   return (
-    <div className="flex items-center px-4 md:px-8 py-3 justify-end border-b">
-      <button className="bg-gray-600 text-white px-5 py-2 sm:px-7 sm:py-2 rounded-full text-xs sm:text-sm">
-        Logout
-      </button>
-    </div>
-  );
-};
+    <header className="flex h-16 shrink-0 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 px-4">
+      <div className="flex items-center gap-2">
+        <SidebarTrigger className="-ml-1" />
+        <Separator orientation="vertical" className="mr-2 h-4" />
+        <Breadcrumbs />
+      </div>
 
-export default HeaderDashboard;
+      <DarkModeToggle />
+    </header>
+  );
+}

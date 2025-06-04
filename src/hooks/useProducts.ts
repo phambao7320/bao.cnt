@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { ProductType } from "@/models/product";
-import { clientAxios } from "@/libs/axios";
+import { axiosInstance } from "@/libs/axios";
 
 const LIMIT = 5;
 
@@ -11,11 +11,11 @@ export const useProducts = () => {
   const [pagination, setPagination] = useState(1);
 
   const fetchProducts = useCallback(async () => {
-    const { data } = await clientAxios.get("/apis/product/list");
+    const { data } = await axiosInstance.get("/apis/product/list");
     if (data.success) {
       setProducts(data.products);
     }
-  }, [clientAxios]);
+  }, [axiosInstance]);
 
   useEffect(() => {
     fetchProducts();

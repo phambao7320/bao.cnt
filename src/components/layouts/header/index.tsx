@@ -9,7 +9,7 @@ import { CartIcon } from "@/components/ui/icons/cart-icon";
 import { BagIcon } from "@/components/ui/icons/bag-icon";
 
 const Header = () => {
-  const { user, router } = useAppContext();
+  const { user, router, isSeller } = useAppContext();
   const { openSignIn } = useClerk();
 
   return (
@@ -34,14 +34,14 @@ const Header = () => {
           Contact
         </Link>
 
-        {/* {isSeller && (
+        {isSeller && (
           <button
-            onClick={() => router.push("/seller")}
+            onClick={() => router.push("/dashboard")}
             className="text-xs border px-4 py-1.5 rounded-full"
           >
             Seller Dashboard
           </button>
-        )} */}
+        )}
       </div>
 
       <ul className="hidden md:flex items-center gap-4 ">
@@ -75,14 +75,14 @@ const Header = () => {
       </ul>
 
       <div className="flex items-center md:hidden gap-3">
-        {/* {isSeller && (
+        {isSeller && (
           <button
-            onClick={() => router.push("/seller")}
+            onClick={() => router.push("/dashboard")}
             className="text-xs border px-4 py-1.5 rounded-full"
           >
             Seller Dashboard
           </button>
-        )} */}
+        )}
 
         {user ? (
           <UserButton />

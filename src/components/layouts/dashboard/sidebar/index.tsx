@@ -1,28 +1,72 @@
-import React from "react";
-import { assets } from "@/assets/assets";
-import SideBarItem from "./sidebar-item";
-import Logo from "@/components/ui/logo";
+"use client";
 
-const SideBar = () => {
-  const menuItems = [
-    {
-      label: "Product List",
-      url: "/dashboard/products",
-      icon: assets.product_list_icon,
-    },
-    { label: "Orders", url: "/dashboard/orders", icon: assets.order_icon },
-  ];
+import { Calendar, Home, Inbox } from "lucide-react";
 
-  return (
-    <div className="md:w-64 w-16 border-r min-h-screen text-base border-gray-300 py-2 flex flex-col">
-      <div className="h-15 flex items-center">
-        <Logo />
-      </div>
-      {menuItems.map((item) => (
-        <SideBarItem {...item} key={item.url} />
-      ))}
-    </div>
-  );
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import { NavUser } from "@/components/ui/nav-user";
+import Link from "next/link";
+
+const items = [
+  {
+    title: "Home",
+    url: "/",
+    icon: Home,
+  },
+  {
+    title: "Products",
+    url: "/dashboard/products",
+    icon: Inbox,
+  },
+  {
+    title: "Orders",
+    url: "/dashboard/orders",
+    icon: Calendar,
+  },
+];
+
+const data = {
+  user: {
+    name: "Admin",
+    email: "admin@example.com",
+    avatar: "",
+  },
 };
 
-export default SideBar;
+export default function SideBarDashboard() {
+  return (
+    <Sidebar>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <Link href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
