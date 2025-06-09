@@ -5,6 +5,7 @@ import { axiosInstance } from "@/libs/axios";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
+import { Toaster } from "sonner";
 
 export const AppContext = createContext<any>({});
 
@@ -118,6 +119,9 @@ export const AppContextProvider = (props: any) => {
   };
 
   return (
-    <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
+    <AppContext.Provider value={value}>
+      <Toaster />
+      {props.children}
+    </AppContext.Provider>
   );
 };

@@ -1,6 +1,6 @@
 import { ProductType } from "@/models/product";
 import { useQuery } from "@tanstack/react-query";
-import { fetchDashboardProducts } from "./request";
+import { fetchDashboardProducts, fetchProductDetail } from "./request";
 
 export type FetchDashboardProductsProps = {
   limit: number;
@@ -16,5 +16,13 @@ export const useDashboardFetchProducts = ({
   return useQuery({
     queryKey: ["dashboard", limit, offset, q],
     queryFn: () => fetchDashboardProducts({ limit, offset, q }),
+  });
+};
+
+export const useFetchProductDetail = (id: string) => {
+  return useQuery({
+    queryKey: ["product-detail", id],
+    queryFn: () => fetchProductDetail(id),
+    enabled: !!id,
   });
 };

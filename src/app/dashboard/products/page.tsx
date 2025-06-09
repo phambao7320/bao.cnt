@@ -1,4 +1,4 @@
-import { DashboardProductsPage } from "@/page";
+import { DashboardProductsPage } from "@/features";
 
 export default function DashboardProducts() {
   return (

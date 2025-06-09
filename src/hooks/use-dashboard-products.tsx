@@ -3,20 +3,27 @@
 import React, { useMemo, useState } from "react";
 import { ProductType } from "@/models/product";
 import { Column, ColumnDef } from "@tanstack/react-table";
-import { useDebounce } from "./useDebounce";
+import { useDebounce } from "./use-debounce";
 import { useDashboardFetchProducts } from "@/services/product";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSearchParams } from "next/navigation";
 import { DataTableColumnHeader } from "@/components/ui/table/data-table-column-header";
+import { CellAction } from "@/components/ui/table/cell-action";
+import { Pencil, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ROUTER_PATHS } from "@/constants/router";
+import { parseParamUrl } from "@/libs/param";
 
 const LIMIT_RECORD = 5;
 
 export const useDashboardProducts = () => {
   const [searchValue, setSearchValue] = useState("");
   const searchQuery = useDebounce(searchValue, 500);
+  const router = useRouter();
 
   const searchParams = useSearchParams();
   const pageCurrent = Number.parseInt(searchParams.get("page") || "1");
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
 
   const { data, error, isPending } = useDashboardFetchProducts({
     limit: LIMIT_RECORD,
@@ -24,7 +31,14 @@ export const useDashboardProducts = () => {
     q: searchQuery,
   });
 
-  console.log("data", data);
+  const handleCloseDeleteDialog = () => {
+    setSelectedRowId(null);
+  };
+
+  const handleDeleteDialog = () => {
+    console.log("remove product", selectedRowId);
+    handleCloseDeleteDialog();
+  };
 
   const columns = useMemo<ColumnDef<ProductType>[]>(
     () => [
@@ -79,6 +93,32 @@ export const useDashboardProducts = () => {
         footer: (props) => props.column.id,
         header: () => "UserID upload",
       },
+      {
+        id: "actions",
+        cell: ({ row }) => (
+          <CellAction
+            actions={[
+              {
+                label: "Edit",
+                onClick: () =>
+                  router.push(
+                    parseParamUrl(ROUTER_PATHS.DASHBOARD_PRODUCTS_EDIT, {
+                      id: row.original._id,
+                    })
+                  ),
+                icon: <Pencil />,
+              },
+              {
+                label: "Delete",
+                onClick: () => {
+                  setSelectedRowId(row.original._id);
+                },
+                icon: <Trash />,
+              },
+            ]}
+          />
+        ),
+      },
     ],
     []
   );
@@ -87,18 +127,16 @@ export const useDashboardProducts = () => {
     setSearchValue(event.target.value);
   };
 
-  const onPageChange = (page: number) => {
-    // setPageCurrent(page);
-  };
-
   return {
     products: data?.products || [],
     columns,
     searchValue,
     onSearch,
     pageCurrent,
-    onPageChange,
     isPending,
     totalPages: data?.totalPages ?? 0,
+    openDeleteDialog: !!selectedRowId,
+    handleDeleteDialog,
+    handleCloseDeleteDialog,
   };
 };

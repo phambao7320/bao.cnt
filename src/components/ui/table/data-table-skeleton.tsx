@@ -10,17 +10,18 @@ import {
 import { cn } from "@/libs/utils";
 
 interface DataTableSkeletonProps extends React.ComponentProps<"div"> {
-  columnCount: number;
+  columnCount?: number;
   rowCount?: number;
   filterCount?: number;
   cellWidths?: string[];
   withViewOptions?: boolean;
   withPagination?: boolean;
   shrinkZero?: boolean;
+  isDisplayColumn?: boolean;
 }
 
 export function DataTableSkeleton({
-  columnCount,
+  columnCount = 5,
   rowCount = 10,
   filterCount = 0,
   cellWidths = ["auto"],
@@ -28,6 +29,7 @@ export function DataTableSkeleton({
   withPagination = true,
   shrinkZero = false,
   className,
+  isDisplayColumn = true,
   ...props
 }: DataTableSkeletonProps) {
   const cozyCellWidths = Array.from(
@@ -35,21 +37,30 @@ export function DataTableSkeleton({
     (_, index) => cellWidths[index % cellWidths.length] ?? "auto"
   );
 
+  if (!isDisplayColumn) {
+    return (
+      <TableBody>
+        {Array.from({ length: rowCount }).map((_, i) => (
+          <TableRow key={i} className="hover:bg-transparent">
+            {Array.from({ length: columnCount }).map((_, j) => (
+              <TableCell
+                key={j}
+                style={{
+                  width: cozyCellWidths[j],
+                  minWidth: shrinkZero ? cozyCellWidths[j] : "auto",
+                }}
+              >
+                <Skeleton className="h-6 w-full" />
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    );
+  }
+
   return (
     <div className={cn("flex flex-1 flex-col space-y-4", className)} {...props}>
-      <div className="flex w-full items-center justify-between gap-2 overflow-auto p-1">
-        <div className="flex flex-1 items-center gap-2">
-          {filterCount > 0
-            ? Array.from({ length: filterCount }).map((_, i) => (
-                <Skeleton key={i} className="h-7 w-[4.5rem] border-dashed" />
-              ))
-            : null}
-        </div>
-        {withViewOptions ? (
-          <Skeleton className="ml-auto hidden h-7 w-[4.5rem] lg:flex" />
-        ) : null}
-      </div>
-
       <div className="flex-1 rounded-md border">
         <Table>
           <TableHeader>

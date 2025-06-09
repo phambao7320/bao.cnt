@@ -111,10 +111,12 @@ export default function PaginationWithLinks({
           <PaginationItem>
             <PaginationPrevious
               href={buildLink(Math.max(page - 1, 1))}
-              aria-disabled={page === 1}
+              aria-disabled={page === 1 || totalPages === 0}
               tabIndex={page === 1 ? -1 : undefined}
               className={
-                page === 1 ? "pointer-events-none opacity-50" : undefined
+                page === 1 || totalPages === 0
+                  ? "pointer-events-none opacity-50 cursor-not-allowed"
+                  : undefined
               }
             />
           </PaginationItem>
@@ -122,11 +124,11 @@ export default function PaginationWithLinks({
           <PaginationItem>
             <PaginationNext
               href={buildLink(Math.min(page + 1, totalPages))}
-              aria-disabled={page === totalPages}
+              aria-disabled={page === totalPages || totalPages === 0}
               tabIndex={page === totalPages ? -1 : undefined}
               className={
-                page === totalPages
-                  ? "pointer-events-none opacity-50"
+                page === totalPages || totalPages === 0
+                  ? "pointer-events-none opacity-50 cursor-not-allowed"
                   : undefined
               }
             />

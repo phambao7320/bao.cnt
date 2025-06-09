@@ -2,7 +2,7 @@
 
 import ProductCard from "@/components/ui/product-card";
 import { DefaultLayout } from "@/components/layouts";
-import { useProducts } from "@/hooks/useProducts";
+import { useProducts } from "@/hooks/use-products";
 
 const ProductsPage = () => {
   const { products } = useProducts();
